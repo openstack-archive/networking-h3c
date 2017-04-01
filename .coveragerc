@@ -1,0 +1,6 @@
+[run]
+branch = True
+source = networking-h3c
+
+[report]
+ignore_errors = True
