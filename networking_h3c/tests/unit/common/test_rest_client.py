@@ -18,7 +18,7 @@ from mock import patch
 from networking_h3c.common import config  # noqa
 from networking_h3c.common.rest_client import RestClient
 from neutron.tests import base
-from oslo_config import cfg
+from oslo.config import cfg  # noqa
 
 
 class RestClientTestCase(base.BaseTestCase):

@@ -15,8 +15,8 @@
 import copy
 
 import requests
-from mock import Mock
 from mock import call
+from mock import Mock
 from mock import patch
 from networking_h3c.common import constants as h_const
 from networking_h3c.common import rest_client
@@ -25,7 +25,7 @@ from neutron.db.securitygroups_db import SecurityGroupDbMixin
 from neutron.extensions import providernet as provider
 from neutron.tests import base
 from neutron_lbaas.db.loadbalancer import loadbalancer_db
-from oslo_config import cfg
+from oslo.config import cfg
 
 fake_vds_id = '0b580f78-4125-4938-88db-578d43fa9317'
 fake_vds_name = 'VDS2'
@@ -360,7 +360,7 @@ class TestH3CMechanismDriver(base.BaseTestCase):
         cfg.CONF.set_override('enable_subnet_dhcp', False, 'VCFCONTROLLER')
         cfg.CONF.set_override('enable_metadata', True, 'VCFCONTROLLER')
         cfg.CONF.set_override('enable_security_group', True, 'VCFCONTROLLER')
-        cfg.CONF.set_override('ip_mac_binding',  True, 'VCFCONTROLLER')
+        cfg.CONF.set_override('ip_mac_binding', True, 'VCFCONTROLLER')
         cfg.CONF.set_override('denyflow_age', 300, 'VCFCONTROLLER')
         cfg.CONF.set_override('empty_rule_action', 'deny', 'VCFCONTROLLER')
         self.driver = md.H3CMechanismDriver()
@@ -808,7 +808,7 @@ class TestH3CMechanismDriver(base.BaseTestCase):
         path = "vds/1.0/ports/%s" % (port['id'])
         port_dict = copy.deepcopy(port)
         port_dict.update({
-            'port_securities':  [{"port_security": sg_id} for sg_id in
+            'port_securities': [{"port_security": sg_id} for sg_id in
                                  port['security_groups']],
             'domain': port['port_extensions']['domain'],
             'dhcp_options': {'interface_mtu': 1400},
@@ -862,7 +862,7 @@ class TestH3CMechanismDriver(base.BaseTestCase):
         port_update_path = "vds/1.0/ports/%s" % (port['id'])
         port_dict = copy.deepcopy(port)
         port_dict.update({
-            'port_securities':  [{"port_security": sg_id} for sg_id in
+            'port_securities': [{"port_security": sg_id} for sg_id in
                                  port['security_groups']],
             'dhcp_options': {'interface_mtu': 1400},
             'qos': port_get_resp['port']['qos']
@@ -879,8 +879,8 @@ class TestH3CMechanismDriver(base.BaseTestCase):
         def_sg_rules_dict = {'securityrules': [fake_def_sg_rule_dict]}
         def_sg_rule_delete_path = "%s/%s" % (
             h_const.SECURITY_GROUP_RULES_RESOURCE, fake_def_sg_rule_dict['id'])
-        def_sg_delete_path = "%s/%s" % (
-                h_const.SECURITY_PORT_GROUPS_RESOURCE, fake_def_sg_id)
+        def_sg_delete_path = "%s/%s" % (h_const.SECURITY_PORT_GROUPS_RESOURCE,
+                                        fake_def_sg_id)
         sg_rules_get_path = "%s?portsecurity_id=%s" % (
             h_const.SECURITY_GROUP_RULES_RESOURCE, fake_sg_id)
         sg_rule_v4_dict = copy.deepcopy(
@@ -960,7 +960,7 @@ class TestH3CMechanismDriver(base.BaseTestCase):
         port_update_path = "vds/1.0/ports/%s" % (port['id'])
         port_dict = copy.deepcopy(port)
         port_dict.update({
-            'port_securities':  [{"port_security": sg_id} for sg_id in
+            'port_securities': [{"port_security": sg_id} for sg_id in
                                  port['security_groups']],
             'dhcp_options': {'interface_mtu': 1400},
             'qos': port_get_resp['port']['qos']
@@ -1026,7 +1026,7 @@ class TestH3CMechanismDriver(base.BaseTestCase):
         port_update_path = "vds/1.0/ports/%s" % (port['id'])
         port_dict = copy.deepcopy(port)
         port_dict.update({
-            'port_securities':  [{"port_security": sg_id} for sg_id in
+            'port_securities': [{"port_security": sg_id} for sg_id in
                                  port['security_groups']],
             'dhcp_options': {'interface_mtu': 1400},
             'qos': port_get_resp['port']['qos']

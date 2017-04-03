@@ -12,11 +12,11 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import oslo_i18n
+import oslo.i18n
 
 DOMAIN = "networking_h3c"
 
-_translators = oslo_i18n.TranslatorFactory(domain=DOMAIN)
+_translators = oslo.i18n.TranslatorFactory(domain=DOMAIN)
 
 # The primary translation function using the well-known name "_"
 _ = _translators.primary
@@ -39,4 +39,4 @@ _LC = _translators.log_critical
 
 
 def get_available_languages():
-    return oslo_i18n.get_available_languages(DOMAIN)
+    return oslo.i18n.get_available_languages(DOMAIN)

@@ -17,10 +17,10 @@ import logging as syslog
 import requests
 import traceback
 
-from oslo_config import cfg
-from oslo_log import log as logging
-from oslo_serialization import jsonutils
-from oslo_utils import excutils
+from oslo.config import cfg
+from oslo.log import log as logging
+from oslo.serialization import jsonutils
+from oslo.utils import excutils
 
 from neutron.common import exceptions as q_exc
 
@@ -187,8 +187,8 @@ class RestClientTokenAuth(object):
             except Exception as e:
                 with excutils.save_and_reraise_exception(
                         reraise=False) as ctxt:
-                    LOG.error(_LE("Exception %s: VCFC exception, "
-                                  "traceback: %s"), e, traceback.format_exc())
+                    LOG.error(_LE("Exception %(exc)s: VCFC exception, "
+                                  "traceback: %(tb)s"), {'exc': e, 'tb': traceback.format_exc()})
                     retry -= 1
                     if retry < 0:
                         ctxt.reraise = True
@@ -259,7 +259,7 @@ class RestClientNoAuth(object):
         if method != "DELETE" and code != requests.codes.not_found:
             try:
                 result = resp.json()
-            except:
+            except Exception:
                 raise exceptions.JsonDecodingError(
                     resource="%s %s" % (method, url))
         return code, result

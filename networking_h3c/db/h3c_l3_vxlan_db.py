@@ -12,14 +12,8 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 
-import sys
-
-from oslo_config import cfg
-from oslo_log import log
-from six import moves
 import sqlalchemy as sa
-from sqlalchemy import sql
-
+import sys
 from networking_h3c._i18n import _
 from networking_h3c._i18n import _LE
 from networking_h3c.common import config  # noqa
@@ -29,6 +23,10 @@ from neutron.db import api as db_api
 from neutron.db import model_base
 from neutron.plugins.ml2 import driver_api as api
 from neutron.plugins.ml2.drivers import helpers
+from oslo.config import cfg
+from oslo.log import log
+from six import moves
+from sqlalchemy import sql
 
 LOG = log.getLogger(__name__)
 

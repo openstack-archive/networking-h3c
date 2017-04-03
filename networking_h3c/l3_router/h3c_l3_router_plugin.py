@@ -12,45 +12,41 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 
-import uuid
 import copy
 import netaddr
-
-from sqlalchemy.orm import exc
-
-from oslo_config import cfg
-from oslo_log import log as logging
-from oslo_utils import excutils
-from oslo_utils import importutils
-
-from neutron import manager
-from neutron.api.rpc.agentnotifiers import l3_rpc_agent_api
-from neutron.api.rpc.handlers import l3_rpc
-from neutron.api.v2 import attributes
-from neutron.common import constants as q_const
-from neutron.common import rpc as n_rpc
-from neutron.common import topics
-from neutron.common import exceptions as common_exceptions
-from neutron.db import common_db_mixin
-from neutron.db import extraroute_db
-from neutron.db import l3_dvrscheduler_db
-from neutron.db import l3_gwmode_db
-from neutron.db import l3_hamode_db
-from neutron.db import l3_hascheduler_db
-from neutron.db import l3_db
-from neutron.db import models_v2
-from neutron.extensions import extraroute
-from neutron.extensions import l3
-from neutron.plugins.common import constants
-
+import uuid
 from networking_h3c import extensions  # noqa
 from networking_h3c._i18n import _
 from networking_h3c._i18n import _LE
 from networking_h3c.common import config  # noqa
+from networking_h3c.common import constants as h_const
 from networking_h3c.common import exceptions
 from networking_h3c.common import rest_client
-from networking_h3c.common import constants as h_const
 from networking_h3c.db import h3c_l3_vxlan_db
+from neutron import manager
+from neutron.api.rpc.agentnotifiers import l3_rpc_agent_api
+from neutron.api.rpc.handlers import l3_rpc
+from neutron.common import constants as q_const
+from neutron.common import exceptions as common_exceptions
+from neutron.common import rpc as n_rpc
+from neutron.common import topics
+from neutron.db import common_db_mixin
+from neutron.db import extraroute_db
+from neutron.db import l3_db
+from neutron.db import l3_dvrscheduler_db
+from neutron.db import l3_gwmode_db
+from neutron.db import l3_hamode_db
+from neutron.db import l3_hascheduler_db
+from neutron.db import models_v2
+from neutron.extensions import extraroute
+from neutron.extensions import l3
+from neutron.plugins.common import constants
+from neutron_lib.api import attributes
+from oslo.config import cfg
+from oslo.log import log as logging
+from oslo.utils import excutils
+from oslo.utils import importutils
+from sqlalchemy.orm import exc
 
 EXTERNAL_GW_INFO = l3.EXTERNAL_GW_INFO
 VENDOR_RPC_TOPIC = ['DP_PLUGIN', 'H3C_PLUGIN']
@@ -100,8 +96,8 @@ class H3CL3RouterPlugin(common_db_mixin.CommonDbMixin,
             self.h3c_l3_vxlan.initialize()
 
     def get_vds_id_from_vcfc(self, vds_name):
-        """
-        Get vds from vcfc.
+        """Get vds from vcfc.
+        
         :param vds_name: used for filter vds
         """
         vds_uuid = None
@@ -277,7 +273,7 @@ class H3CL3RouterPlugin(common_db_mixin.CommonDbMixin,
         return router_in_db
 
     def _update_router_without_check_rescheduling(self, context, rid, router):
-        # TODO: _check_router_needs_rescheduling when h3c-agent support dvr
+        # TODO(Huang Cheng): _check_router_needs_rescheduling when h3c-agent support dvr
         r = router['router']
         with context.session.begin(subtransactions=True):
             # check if route exists and have permission to access
@@ -444,8 +440,8 @@ class H3CL3RouterPlugin(common_db_mixin.CommonDbMixin,
         return router_in_db
 
     def _ensure_router_not_attached_to_firewall(self, context, router):
-        """
-        Ensure that the router is not attached to one of the tenant firewalls.
+        """Ensure that the router is not attached to one of the tenant firewalls.
+        
         :param context: neutron api request context
         :param router: router in db
         """
@@ -557,8 +553,6 @@ class H3CL3RouterPlugin(common_db_mixin.CommonDbMixin,
         LOG.debug("VCFC add_router_interface called")
         LOG.debug("ctx = %s", context.__dict__)
         LOG.debug("router id from north is %s", router_id)
-
-        interface_info_notify = copy.deepcopy(interface_info)
 
         add_by_port, add_by_sub = self._validate_interface_info(interface_info)
         if add_by_port:
@@ -696,7 +690,6 @@ class H3CL3RouterPlugin(common_db_mixin.CommonDbMixin,
         LOG.debug("remove router interface called and interface info is %s",
                   interface_info)
 
-        interface_info_notify = copy.deepcopy(interface_info)
         remove_by_port, remove_by_subnet = (
             self._validate_interface_info(interface_info, for_removal=True))
         port_id = interface_info.get('port_id')
@@ -745,7 +738,6 @@ class H3CL3RouterPlugin(common_db_mixin.CommonDbMixin,
         LOG.debug("ctx = %s", context.__dict__)
         LOG.debug("floating ip from north is %s", floatingip)
 
-        floatingip_notify = copy.deepcopy(floatingip)
         floatingip_neutron = super(H3CL3RouterPlugin, self). \
             create_floatingip(context, floatingip)
         floatingip_vcfc = copy.deepcopy(floatingip_neutron)
@@ -779,7 +771,6 @@ class H3CL3RouterPlugin(common_db_mixin.CommonDbMixin,
         LOG.debug("ctx = %s", context.__dict__)
         LOG.debug("floating ip from north is %s", floatingip)
 
-        floatingip_notify = copy.deepcopy(floatingip)
         resource_path = h_const.FLOATINGIP_RESOURCE % fid
 
         floatingip_tmp = super(H3CL3RouterPlugin, self).\

@@ -14,19 +14,16 @@
 
 
 import mock
-import uuid
-from six import moves
-from testtools import matchers
-
-from networking_h3c.db import h3c_l3_vxlan_db as l3_vxlan
-from networking_h3c.common import exceptions as h_exc
-from neutron.common import exceptions as exc
 import neutron.db.api as db
-from neutron.plugins.common import constants as p_const
-from neutron.plugins.common import utils as plugin_utils
+import uuid
+from networking_h3c.common import exceptions as h_exc
+from networking_h3c.db import h3c_l3_vxlan_db as l3_vxlan
+from neutron.common import exceptions as exc
 from neutron.plugins.ml2 import config
 from neutron.plugins.ml2 import driver_api as api
 from neutron.tests.unit import testlib_api
+from six import moves
+from testtools import matchers
 
 VXLAN_MIN = 10000
 VXLAN_MAX = 10100

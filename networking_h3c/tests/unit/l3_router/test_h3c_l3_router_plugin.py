@@ -20,8 +20,8 @@ from mock import Mock
 from mock import patch
 
 import requests
-from oslo_config import cfg
-from oslo_db import exception as db_exc
+from oslo.config import cfg
+from oslo.db import exception as db_exc
 
 from neutron.common import exceptions as q_exc
 from neutron.db.common_db_mixin import CommonDbMixin

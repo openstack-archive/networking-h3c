@@ -12,47 +12,42 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 
-import json
-import uuid
 import copy
-import threading
+import json
+import oslo.messaging
 import socket
-import oslo_messaging
-
-from keystoneclient.auth.identity import v3
+import threading
+import uuid
 from keystoneclient import session
+from keystoneclient.auth.identity import v3
 from keystoneclient.v3 import client as k_client
-
+from networking_h3c._i18n import _LE
+from networking_h3c.common import config  # noqa
+from networking_h3c.common import constants as h_const
+from networking_h3c.common import exceptions  # noqa
+from networking_h3c.common import rest_client
+from networking_h3c.common import topics as h3c_topics
 from neutron import context as neutron_context
-from neutron.plugins.ml2 import driver_api
-from neutron.plugins.ml2 import driver_context
-from neutron.api.v2 import attributes
 from neutron.agent import rpc as agent_rpc
 from neutron.agent import securitygroups_rpc
-from neutron.extensions import providernet as provider
+from neutron.common import constants
+from neutron.common import rpc as n_rpc
+from neutron.common import topics
 from neutron.db import db_base_plugin_v2
 from neutron.db import models_v2
 from neutron.db import securitygroups_db as sg_db
-from neutron.extensions import multiprovidernet as mpnet
 from neutron.extensions import external_net
-from neutron.extensions import securitygroup as ext_sg
+from neutron.extensions import multiprovidernet as mpnet
 from neutron.extensions import portbindings
-from neutron.common import constants
-from neutron.common import topics
-from neutron.common import rpc as n_rpc
+from neutron.extensions import providernet as provider
+from neutron.extensions import securitygroup as ext_sg
 from neutron.plugins.common import constants as common_constants
-
-from oslo_config import cfg
-from oslo_log import log as logging
-from oslo_serialization import jsonutils
-
-from networking_h3c._i18n import _LE
-from networking_h3c.common import config  # noqa
-from networking_h3c.common import exceptions  # noqa
-from networking_h3c.common import constants as h_const
-from networking_h3c.common import rest_client
-from networking_h3c.common import topics as h3c_topics
-
+from neutron.plugins.ml2 import driver_api
+from neutron.plugins.ml2 import driver_context
+from neutron_lib.api import attributes
+from oslo.config import cfg
+from oslo.log import log as logging
+from oslo.serialization import jsonutils
 
 LOG = logging.getLogger(__name__)
 
@@ -64,7 +59,7 @@ class H3CResourceApi(object):
     """From agent side of plugin to agent RPC API."""
 
     def __init__(self, topic):
-        target = oslo_messaging.Target(topic=topic, version='1.0')
+        target = oslo.messaging.Target(topic=topic, version='1.0')
         self.client = n_rpc.get_client(target)
         super(H3CResourceApi, self).__init__()
 
@@ -111,7 +106,7 @@ class H3CMechanismDriver(driver_api.MechanismDriver):
     # history
     #   1.0 Initial version
     #   1.1 Support Security Group RPC
-    target = oslo_messaging.Target(version='1.2')
+    target = oslo.messaging.Target(version='1.2')
 
     def __init__(self):
         super(H3CMechanismDriver, self).__init__()
@@ -204,8 +199,8 @@ class H3CMechanismDriver(driver_api.MechanismDriver):
         return keystone_client
 
     def get_vds_id_from_vcfc(self, vds_name):
-        """
-        Get vds from vcfc.
+        """Get vds from vcfc.
+        
         :param vds_name: used for filter vds
         """
         vds_uuid = None
@@ -549,8 +544,7 @@ class H3CMechanismDriver(driver_api.MechanismDriver):
             del current_port['extra_dhcp_opts']
         except Exception as e:
             LOG.error(_LE("Failed to _constructive_port_for_updation "
-                          "for port %s, exception is %s"), current_port,
-                      str(e))
+                          "for port %(port)s, exception is %(exc)s"), {'port': current_port, 'exc': str(e)})
 
         return {"port": current_port}
 
@@ -874,8 +868,8 @@ class H3CMechanismDriver(driver_api.MechanismDriver):
         return ip_prefixs
 
     def _is_exist_security_group_in_vcfc(self, security_group_id):
-        """
-        _is_exist_security_group_in_vcfc
+        """_is_exist_security_group_in_vcfc
+        
         :param security_group_id: security_group_id
         """
         LOG.debug("H3C ML2 plugin _is_exist_security_group_in_vcfc called")
@@ -1067,8 +1061,8 @@ class H3CMechanismDriver(driver_api.MechanismDriver):
                                               context,
                                               plugin,
                                               port):
-        """
-        create_security_group
+        """create_security_group
+        
         :param context: context
         :param plugin: plugin
         :param port: current port
@@ -1123,8 +1117,8 @@ class H3CMechanismDriver(driver_api.MechanismDriver):
                   {'sg': security_group_id})
 
     def delete_security_group_to_vcfc_and_local(self, security_group_id):
-        """
-        delete_security_group
+        """delete_security_group
+        
         :param security_group_id: UUID of security_group which to delete
         """
         LOG.debug("VSM delete_security_group called: "
@@ -1160,8 +1154,8 @@ class H3CMechanismDriver(driver_api.MechanismDriver):
                                                  context,
                                                  plugin,
                                                  current_port):
-        """
-        delete_security_group_rule_to_vsm
+        """delete_security_group_rule_to_vsm
+        
         :param context: neutron api request context
         :param plugin: plugin
         :param current_port: current_port
@@ -1371,8 +1365,8 @@ class H3CMechanismDriver(driver_api.MechanismDriver):
         return
 
     def delete_security_group_rule_to_vcfc(self, sg_rule_id):
-        """
-        delete_security_group_rule
+        """delete_security_group_rule
+        
         :param sg_rule_id: UUID of delete_security_group_rule which to delete
         """
         LOG.debug("VSM delete_security_group_rule called: sg_rule_id=%s",

@@ -12,10 +12,10 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 
+from networking_h3c._i18n import _
 from neutron.common import exceptions as qexception
 from neutron.common.exceptions import NeutronException
 from neutron.common.exceptions import ServiceUnavailable
-from networking_h3c._i18n import _
 
 
 class RequestTimeoutError(ServiceUnavailable):

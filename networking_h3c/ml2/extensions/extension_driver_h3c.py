@@ -12,9 +12,9 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 
-from oslo_log import log as logging
-from neutron.plugins.ml2 import driver_api as api
 from networking_h3c._i18n import _
+from neutron.plugins.ml2 import driver_api as api
+from oslo.log import log as logging
 
 LOG = logging.getLogger(__name__)
 

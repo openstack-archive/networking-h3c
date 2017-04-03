@@ -12,8 +12,8 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 
-from oslo_config import cfg
 from networking_h3c._i18n import _
+from oslo.config import cfg
 
 CONTROLLER_OPTS = [
     cfg.StrOpt('url', default='https://127.0.0.1:8443',
