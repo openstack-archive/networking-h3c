@@ -1,0 +1,8 @@
+Code-Review+2: HuangCheng <huang.cheng@h3c.com>
+Workflow+1: HuangCheng <huang.cheng@h3c.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 04 Apr 2017 10:21:19 +0000
+Reviewed-on: https://review.openstack.org/452662
+Project: openstack/networking-h3c
+Branch: refs/heads/master
