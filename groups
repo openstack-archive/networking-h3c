@@ -1,2 +1,4 @@
-bbc9d0948e0c76a5e82d0865ba7fba09873c76c5	networking-h3c-release
+# UUID                                  	Group Name
+#
 93dcd04a32020693c149598b947818ea747a7f2d	networking-h3c-core
+bbc9d0948e0c76a5e82d0865ba7fba09873c76c5	networking-h3c-release
