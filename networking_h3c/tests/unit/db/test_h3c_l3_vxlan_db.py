@@ -21,6 +21,7 @@ from neutron.db import api as db
 from neutron.plugins.ml2 import config
 from neutron.plugins.ml2 import driver_api as api
 from neutron.tests.unit import testlib_api
+from neutron_lib import context
 from neutron_lib import exceptions as exc
 from six import moves
 from testtools import matchers
@@ -41,7 +42,7 @@ class TestH3CL3VxlanDriver(testlib_api.SqlTestCase):
                                      'VCFCONTROLLER')
         self.driver = l3_vxlan.H3CL3VxlanDriver()
         self.driver._sync_l3_vxlan_allocations()
-        self.context = mock.Mock(session=db.get_session())
+        self.context = context.Context()
 
     def _get_allocation(self, session, router_id):
         return session.query(l3_vxlan.H3CL3VxlanAllocation).filter_by(
