@@ -84,7 +84,7 @@ class H3CL3VxlanDriver(helpers.SegmentTypeDriver):
         session = context.session
         mtu = []
         with session.begin(subtransactions=True):
-            segment = self.allocate_tenant_segment(session)
+            segment = self.allocate_tenant_segment(context)
             if segment.get(api.MTU) > 0:
                 mtu.append(segment[api.MTU])
 
@@ -155,8 +155,8 @@ class H3CL3VxlanDriver(helpers.SegmentTypeDriver):
     def get_type(self):
         return 'l3_vxlan'
 
-    def allocate_tenant_segment(self, session):
-        alloc = self.allocate_partially_specified_segment(session)
+    def allocate_tenant_segment(self, context):
+        alloc = self.allocate_partially_specified_segment(context)
         if not alloc:
             raise h_exc.NoTunnelIdAvailable(tunnel_type=self.get_type())
         return {api.NETWORK_TYPE: self.get_type(),
