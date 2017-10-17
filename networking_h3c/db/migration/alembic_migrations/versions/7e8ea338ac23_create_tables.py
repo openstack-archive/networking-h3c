@@ -60,7 +60,7 @@ def upgrade():
                     sa.Column('tenant_id', sa.String(255)),
                     sa.Column('service_type', sa.String(255)),
                     sa.Column('service_instance_id', sa.String(255)),
-                    sa.Column('insertion_id', sa.String(255),
+                    sa.Column('insertion_id', sa.String(36),
                               sa.ForeignKey('h3c_serviceinsertions.id',
                                             ondelete='CASCADE')),
                     )
