@@ -111,7 +111,7 @@ class H3CMechanismDriver(driver_api.MechanismDriver):
     def __init__(self):
         super(H3CMechanismDriver, self).__init__()
 
-        # init for for h3c neutron ml2 plugin
+        # init for h3c neutron ml2 plugin
         self.client = rest_client.RestClient()
         self.neutron_db = NeutronDB()
         self.sg_enabled = securitygroups_rpc.is_firewall_enabled()
