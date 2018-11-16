@@ -1,0 +1,8 @@
+Code-Review+2: Huang Cheng <huang.cheng@h3c.com>
+Workflow+1: Huang Cheng <huang.cheng@h3c.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 16 Nov 2018 05:56:44 +0000
+Reviewed-on: https://review.openstack.org/618408
+Project: openstack/networking-h3c
+Branch: refs/heads/master
